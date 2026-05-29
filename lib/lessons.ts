@@ -2,6 +2,8 @@ export type Subject = "geometry" | "algebra";
 export type Level = 1 | 2 | 3;
 export type DemoId =
   | "geometry-basics"
+  | "angle-types"
+  | "number-line"
   | "perimeter-area"
   | "circle-explorer"
   | "rectangle-area"
@@ -15,13 +17,19 @@ export type DemoId =
   | "algebra-square"
   | "algebra-minus-square"
   | "difference-squares"
+  | "pythagoras"
+  | "factorization-area"
+  | "product-grid"
   | "word-problem";
 
 export type PracticeQuestion = {
   id: string;
+  type?: "multiple-choice" | "fill-blank" | "step";
   prompt: string;
-  options: string[];
+  options?: string[];
   correctAnswer: string;
+  acceptedAnswers?: string[];
+  steps?: string[];
   explanation: string;
 };
 
@@ -84,6 +92,102 @@ export const lessons: Lesson[] = [
         options: ["A position", "A full area", "A formula"],
         correctAnswer: "A position",
         explanation: "A point marks an exact position."
+      }
+    ]
+  },
+  {
+    slug: "angle-types",
+    title: "Angle Types",
+    subject: "geometry",
+    level: 1,
+    accent: "rose",
+    summary: "Compare acute, right, obtuse, and straight turns.",
+    concept:
+      "Angles describe turns. Different turns get different names so we can talk about shapes precisely.",
+    formula: "Right angle = 90°",
+    symbols: [
+      "Acute angles are less than 90°.",
+      "Right angles are exactly 90°.",
+      "Obtuse angles are between 90° and 180°.",
+      "A straight angle is 180°."
+    ],
+    why: [
+      "A small turn makes an acute angle.",
+      "A square corner makes a right angle.",
+      "A wider turn makes an obtuse angle.",
+      "A half-turn makes a straight angle."
+    ],
+    demoId: "angle-types",
+    practice: [
+      {
+        id: "at1",
+        prompt: "An angle smaller than 90° is called:",
+        options: ["Acute", "Right", "Straight"],
+        correctAnswer: "Acute",
+        explanation: "Acute angles are smaller than a right angle."
+      },
+      {
+        id: "at2",
+        type: "fill-blank",
+        prompt: "A right angle measures ___ degrees.",
+        correctAnswer: "90",
+        acceptedAnswers: ["90", "90°", "ninety"],
+        explanation: "A right angle is exactly 90 degrees."
+      },
+      {
+        id: "at3",
+        prompt: "A straight angle measures:",
+        options: ["180°", "90°", "45°"],
+        correctAnswer: "180°",
+        explanation: "A straight angle is a half-turn, which is 180 degrees."
+      }
+    ]
+  },
+  {
+    slug: "number-line-basics",
+    title: "Number Line Basics",
+    subject: "algebra",
+    level: 1,
+    accent: "blue",
+    summary: "Use a number line to see addition, subtraction, and unknown values.",
+    concept:
+      "A number line turns numbers into positions. Moving right adds, and moving left subtracts.",
+    formula: "x + 3 means move 3 steps right from x",
+    symbols: [
+      "Numbers become ordered positions.",
+      "Positive movement goes right.",
+      "Negative movement goes left.",
+      "A variable can mark an unknown position."
+    ],
+    why: [
+      "A number line keeps values in order.",
+      "Adding moves to the right by a fixed number of steps.",
+      "Subtracting moves to the left.",
+      "This makes equations easier to picture."
+    ],
+    demoId: "number-line",
+    practice: [
+      {
+        id: "nl1",
+        prompt: "On a number line, adding usually means moving:",
+        options: ["Right", "Left", "Nowhere"],
+        correctAnswer: "Right",
+        explanation: "Adding positive numbers moves right on the number line."
+      },
+      {
+        id: "nl2",
+        type: "fill-blank",
+        prompt: "Starting at 4 and moving 3 steps right lands on ___.",
+        correctAnswer: "7",
+        acceptedAnswers: ["7", "seven"],
+        explanation: "4 + 3 = 7."
+      },
+      {
+        id: "nl3",
+        prompt: "Subtracting 2 from 6 means:",
+        options: ["Move 2 left", "Move 2 right", "Stay at 6"],
+        correctAnswer: "Move 2 left",
+        explanation: "Subtraction moves left on the number line."
       }
     ]
   },
@@ -362,6 +466,54 @@ export const lessons: Lesson[] = [
     ]
   },
   {
+    slug: "square-vs-rectangle",
+    title: "Square vs Rectangle",
+    subject: "geometry",
+    level: 1,
+    accent: "amber",
+    summary: "See how squares and rectangles are related.",
+    concept:
+      "A square is a special rectangle where all four sides are equal. A rectangle only needs opposite sides to match.",
+    formula: "Square: s x s, Rectangle: l x b",
+    symbols: [
+      "Both shapes have four right angles.",
+      "A square has all sides equal.",
+      "A rectangle has opposite sides equal.",
+      "Both use rows and columns for area."
+    ],
+    why: [
+      "Both shapes can be tiled with unit squares.",
+      "The square uses the same side length twice.",
+      "The rectangle may use two different side lengths.",
+      "That is why square area is s² and rectangle area is length x breadth."
+    ],
+    demoId: "rectangle-area",
+    practice: [
+      {
+        id: "sr1",
+        prompt: "A square is a rectangle with:",
+        options: ["All sides equal", "No angles", "Only one side"],
+        correctAnswer: "All sides equal",
+        explanation: "A square is a special rectangle because every side has the same length."
+      },
+      {
+        id: "sr2",
+        prompt: "Both square and rectangle have:",
+        options: ["Four right angles", "Curved sides", "Only three corners"],
+        correctAnswer: "Four right angles",
+        explanation: "Squares and rectangles both have four 90 degree angles."
+      },
+      {
+        id: "sr3",
+        type: "fill-blank",
+        prompt: "A square with side 4 has area ___.",
+        correctAnswer: "16",
+        acceptedAnswers: ["16", "16 square units"],
+        explanation: "Square area is side x side, so 4 x 4 = 16."
+      }
+    ]
+  },
+  {
     slug: "triangle-area-half-rectangle",
     title: "Why Triangle Area Is 1/2 x Base x Height",
     subject: "geometry",
@@ -404,6 +556,52 @@ export const lessons: Lesson[] = [
         options: ["Along a slanted side", "Straight from base to top", "Around the triangle"],
         correctAnswer: "Straight from base to top",
         explanation: "Height is perpendicular to the base, even when the side is slanted."
+      }
+    ]
+  },
+  {
+    slug: "pythagoras-visual-proof",
+    title: "Why a² + b² = c²",
+    subject: "geometry",
+    level: 2,
+    accent: "violet",
+    summary: "See the right-triangle squares that make Pythagoras visible.",
+    concept:
+      "In a right triangle, the squares on the two shorter sides together match the square on the longest side.",
+    formula: "a² + b² = c²",
+    symbols: [
+      "a and b are the shorter sides of a right triangle.",
+      "c is the hypotenuse, the side opposite the right angle.",
+      "a², b², and c² are square areas built on those sides."
+    ],
+    why: [
+      "Build a square on each side of a right triangle.",
+      "The two smaller square areas together fill the same area as the largest square.",
+      "That area relationship is written as a² + b² = c²."
+    ],
+    demoId: "pythagoras",
+    practice: [
+      {
+        id: "py1",
+        prompt: "In a right triangle, the longest side is called:",
+        options: ["Hypotenuse", "Radius", "Coefficient"],
+        correctAnswer: "Hypotenuse",
+        explanation: "The hypotenuse is the side opposite the right angle."
+      },
+      {
+        id: "py2",
+        type: "fill-blank",
+        prompt: "If a = 3 and b = 4, then c² = 9 + 16 = ___.",
+        correctAnswer: "25",
+        acceptedAnswers: ["25"],
+        explanation: "3² + 4² = 9 + 16 = 25."
+      },
+      {
+        id: "py3",
+        prompt: "Pythagoras works for:",
+        options: ["Right triangles", "Every circle", "Only squares"],
+        correctAnswer: "Right triangles",
+        explanation: "The theorem describes side areas in a right triangle."
       }
     ]
   },
@@ -592,6 +790,53 @@ export const lessons: Lesson[] = [
     ]
   },
   {
+    slug: "product-area-model",
+    title: "Why (a + b)(c + d) Expands",
+    subject: "algebra",
+    level: 2,
+    accent: "blue",
+    summary: "Split a rectangle into four regions to expand two brackets.",
+    concept:
+      "Multiplying two sums means finding the area of a rectangle whose sides are split into two parts each.",
+    formula: "(a + b)(c + d) = ac + ad + bc + bd",
+    symbols: [
+      "a + b is one side split into two lengths.",
+      "c + d is the other side split into two lengths.",
+      "Each small rectangle gives one product term."
+    ],
+    why: [
+      "Draw a rectangle with side lengths a + b and c + d.",
+      "Split one side into a and b.",
+      "Split the other side into c and d.",
+      "The four areas are ac, ad, bc, and bd."
+    ],
+    demoId: "product-grid",
+    practice: [
+      {
+        id: "pg1",
+        prompt: "How many parts appear in (a + b)(c + d)?",
+        options: ["4", "2", "1"],
+        correctAnswer: "4",
+        explanation: "The area model splits into four rectangles."
+      },
+      {
+        id: "pg2",
+        type: "fill-blank",
+        prompt: "Complete: (x + 2)(y + 3) = xy + 3x + 2y + ___.",
+        correctAnswer: "6",
+        acceptedAnswers: ["6"],
+        explanation: "The last part is 2 x 3 = 6."
+      },
+      {
+        id: "pg3",
+        prompt: "The ac term comes from:",
+        options: ["a times c", "a plus c", "b times d"],
+        correctAnswer: "a times c",
+        explanation: "Each region is one side part multiplied by another side part."
+      }
+    ]
+  },
+  {
     slug: "algebra-minus-square-identity",
     title: "Why (a - b)² = a² - 2ab + b²",
     subject: "algebra",
@@ -684,6 +929,55 @@ export const lessons: Lesson[] = [
     ]
   },
   {
+    slug: "factorization-area-model",
+    title: "Factorization With Area Model",
+    subject: "algebra",
+    level: 2,
+    accent: "green",
+    summary: "Reverse expansion by grouping area tiles into side lengths.",
+    concept:
+      "Factorization asks which rectangle side lengths could create the same area expression.",
+    formula: "x² + 5x + 6 = (x + 2)(x + 3)",
+    symbols: [
+      "x² is the large square tile.",
+      "5x means five x-rectangles.",
+      "6 means six unit tiles.",
+      "The side lengths become x + 2 and x + 3."
+    ],
+    why: [
+      "Arrange x², x-tiles, and unit tiles into one rectangle.",
+      "Read the two side lengths of that rectangle.",
+      "Those side lengths are the factors.",
+      "Multiplying them gives the original expression."
+    ],
+    demoId: "factorization-area",
+    practice: [
+      {
+        id: "fa1",
+        prompt: "Which factors multiply to x² + 5x + 6?",
+        options: ["(x + 2)(x + 3)", "(x + 1)(x + 6)", "(x + 5)(x + 6)"],
+        correctAnswer: "(x + 2)(x + 3)",
+        explanation: "2 and 3 add to 5 and multiply to 6."
+      },
+      {
+        id: "fa2",
+        type: "step",
+        prompt: "Factor x² + 4x + 3.",
+        options: ["(x + 1)(x + 3)", "(x + 2)(x + 2)", "(x + 4)(x + 3)"],
+        correctAnswer: "(x + 1)(x + 3)",
+        steps: ["Find two numbers that multiply to 3.", "They must add to 4.", "1 and 3 work, so the factors are x + 1 and x + 3."],
+        explanation: "The side lengths are x + 1 and x + 3."
+      },
+      {
+        id: "fa3",
+        prompt: "Factorization is the reverse of:",
+        options: ["Expansion", "Counting angles", "Measuring radius"],
+        correctAnswer: "Expansion",
+        explanation: "Expansion multiplies factors out; factorization finds the factors again."
+      }
+    ]
+  },
+  {
     slug: "mixed-word-problems",
     title: "Mixed Word Problems",
     subject: "geometry",
@@ -725,6 +1019,55 @@ export const lessons: Lesson[] = [
         options: ["Equation", "Circle area", "Triangle height"],
         correctAnswer: "Equation",
         explanation: "An unknown number can be represented by a variable in an equation."
+      }
+    ]
+  },
+  {
+    slug: "algebra-word-problems",
+    title: "Algebra Word Problems",
+    subject: "algebra",
+    level: 3,
+    accent: "rose",
+    summary: "Translate unknown quantities into equations.",
+    concept:
+      "Algebra word problems become clearer when the unknown value is named with a variable.",
+    formula: "unknown + clue = total",
+    symbols: [
+      "Use x for the unknown number.",
+      "Translate words like more, less, total, and equal.",
+      "Solve the equation after translating."
+    ],
+    why: [
+      "The story gives relationships between numbers.",
+      "A variable holds the missing value.",
+      "The equation keeps both sides balanced.",
+      "Solving the equation answers the story question."
+    ],
+    demoId: "word-problem",
+    practice: [
+      {
+        id: "aw1",
+        prompt: "A number plus 5 is 12. Which equation matches?",
+        options: ["x + 5 = 12", "x - 5 = 12", "5x = 12"],
+        correctAnswer: "x + 5 = 12",
+        explanation: "The phrase plus 5 is 12 translates directly to x + 5 = 12."
+      },
+      {
+        id: "aw2",
+        type: "fill-blank",
+        prompt: "Solve x + 5 = 12. x = ___.",
+        correctAnswer: "7",
+        acceptedAnswers: ["7", "seven"],
+        explanation: "Subtract 5 from both sides, so x = 7."
+      },
+      {
+        id: "aw3",
+        type: "step",
+        prompt: "A number doubled is 18. What is the number?",
+        options: ["9", "16", "36"],
+        correctAnswer: "9",
+        steps: ["Let the unknown be x.", "Doubled means 2x.", "2x = 18, so x = 9."],
+        explanation: "Half of 18 is 9."
       }
     ]
   }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { lessons } from "@/lib/lessons";
 
@@ -80,8 +81,10 @@ export function ProgressSummary({ compact = false }: { compact?: boolean }) {
               {weakConcepts.length ? (
                 <ul className="mt-3 grid gap-2">
                   {weakConcepts.map((lesson) => (
-                    <li key={lesson.slug} className="rounded-md bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900">
-                      Review {lesson.title}
+                    <li key={lesson.slug}>
+                      <Link href={`/practice/${lesson.slug}`} className="focus-ring block rounded-md bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900 transition hover:bg-rose-100">
+                        Review {lesson.title}
+                      </Link>
                     </li>
                   ))}
                 </ul>

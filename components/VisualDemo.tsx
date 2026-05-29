@@ -5,6 +5,8 @@ import type { DemoId } from "@/lib/lessons";
 
 export function VisualDemo({ demoId }: { demoId: DemoId }) {
   if (demoId === "geometry-basics") return <GeometryBasics />;
+  if (demoId === "angle-types") return <AngleTypes />;
+  if (demoId === "number-line") return <NumberLine />;
   if (demoId === "perimeter-area") return <PerimeterArea />;
   if (demoId === "circle-explorer") return <CircleExplorer />;
   if (demoId === "rectangle-area") return <RectangleArea />;
@@ -17,6 +19,9 @@ export function VisualDemo({ demoId }: { demoId: DemoId }) {
   if (demoId === "linear-equation") return <LinearEquation />;
   if (demoId === "algebra-minus-square") return <AlgebraMinusSquare />;
   if (demoId === "difference-squares") return <DifferenceSquares />;
+  if (demoId === "pythagoras") return <PythagorasDemo />;
+  if (demoId === "factorization-area") return <FactorizationArea />;
+  if (demoId === "product-grid") return <ProductGrid />;
   if (demoId === "word-problem") return <WordProblemChooser />;
   return <AlgebraSquare />;
 }
@@ -75,6 +80,82 @@ function PerimeterArea() {
           <text x="18" y="156" fill="#1d4ed8" fontSize="16" fontWeight="900">area = inside tiles</text>
         </g>
       </svg>
+    </div>
+  );
+}
+
+function AngleTypes() {
+  const angles = [
+    { label: "acute", degrees: 45, color: "#2563eb" },
+    { label: "right", degrees: 90, color: "#14b8a6" },
+    { label: "obtuse", degrees: 130, color: "#f59e0b" },
+    { label: "straight", degrees: 180, color: "#e11d48" }
+  ];
+
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 300" role="img" aria-label="Angle type comparison" className="h-full min-h-72 w-full">
+        <rect width="520" height="300" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Angles are named by the size of the turn.</text>
+        {angles.map((angle, index) => {
+          const x = 72 + index * 116;
+          const y = 176;
+          const radians = (angle.degrees * Math.PI) / 180;
+          const endX = x + 62 * Math.cos(Math.PI - radians);
+          const endY = y - 62 * Math.sin(Math.PI - radians);
+          return (
+            <g key={angle.label}>
+              <line x1={x} y1={y} x2={x + 70} y2={y} stroke={angle.color} strokeWidth="5" strokeLinecap="round" />
+              <line x1={x} y1={y} x2={endX} y2={endY} stroke={angle.color} strokeWidth="5" strokeLinecap="round" />
+              <path d={`M ${x + 28} ${y} A 28 28 0 0 0 ${x + 28 * Math.cos(Math.PI - radians)} ${y - 28 * Math.sin(Math.PI - radians)}`} fill="none" stroke={angle.color} strokeWidth="3" />
+              <text x={x - 20} y="230" fill={angle.color} fontSize="15" fontWeight="900">{angle.label}</text>
+              <text x={x - 10} y="250" fill="#475569" fontSize="13" fontWeight="800">{angle.degrees}°</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function NumberLine() {
+  const [start, setStart] = useState(4);
+  const [jump, setJump] = useState(3);
+  const end = start + jump;
+  const ticks = Array.from({ length: 11 }, (_, index) => index);
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[1fr_16rem]">
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <svg viewBox="0 0 520 260" role="img" aria-label="Number line addition" className="h-full min-h-64 w-full">
+          <rect width="520" height="260" rx="16" fill="#f8fafc" />
+          <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Move right to add. Move left to subtract.</text>
+          <line x1="52" y1="140" x2="468" y2="140" stroke="#14213d" strokeWidth="4" strokeLinecap="round" />
+          {ticks.map((tick) => {
+            const x = 60 + tick * 40;
+            return (
+              <g key={tick}>
+                <line x1={x} y1="126" x2={x} y2="154" stroke="#14213d" strokeWidth="3" />
+                <text x={x - 5} y="182" fill="#475569" fontSize="13" fontWeight="800">{tick}</text>
+              </g>
+            );
+          })}
+          <path d={`M ${60 + start * 40} 112 C ${90 + start * 40} ${52} ${30 + end * 40} ${52} ${60 + end * 40} 112`} fill="none" stroke="#2563eb" strokeWidth="5" strokeLinecap="round" />
+          <circle cx={60 + start * 40} cy="140" r="8" fill="#f59e0b" />
+          <circle cx={60 + end * 40} cy="140" r="8" fill="#14b8a6" />
+          <text x="190" y="78" fill="#1d4ed8" fontSize="16" fontWeight="900">{start} + {jump} = {end}</text>
+        </svg>
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <label className="block text-sm font-bold text-slate-700" htmlFor="line-start">Start = {start}</label>
+        <input id="line-start" className="mt-3 w-full accent-amber-600" type="range" min="0" max="7" value={start} onChange={(event) => setStart(Number(event.target.value))} />
+        <label className="mt-5 block text-sm font-bold text-slate-700" htmlFor="line-jump">Jump = {jump}</label>
+        <input id="line-jump" className="mt-3 w-full accent-blue-600" type="range" min="1" max={10 - start} value={jump} onChange={(event) => setJump(Number(event.target.value))} />
+        <dl className="mt-5 grid gap-3 text-sm">
+          <Metric label="Expression" value={`${start} + ${jump}`} color="text-blue-700" />
+          <Metric label="Landing" value={end.toString()} color="text-teal-700" />
+        </dl>
+      </div>
     </div>
   );
 }
@@ -579,6 +660,77 @@ function DifferenceSquares() {
           <Metric label="(a+b)(a-b)" value={((a + b) * (a - b)).toString()} color="text-teal-700" />
         </dl>
       </div>
+    </div>
+  );
+}
+
+function PythagorasDemo() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 320" role="img" aria-label="Pythagoras visual proof" className="h-full min-h-80 w-full">
+        <rect width="520" height="320" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Right-triangle side squares show a² + b² = c².</text>
+        <g transform="translate(110 78)">
+          <polygon points="0,160 0,40 160,160" fill="#ffffff" stroke="#14213d" strokeWidth="4" />
+          <rect x="-70" y="40" width="70" height="120" fill="#dbeafe" stroke="#2563eb" strokeWidth="3" />
+          <rect x="0" y="160" width="160" height="70" fill="#ccfbf1" stroke="#0f766e" strokeWidth="3" />
+          <polygon points="34,2 196,122 160,160 0,40" fill="#fde68a" stroke="#d97706" strokeWidth="3" opacity="0.9" />
+          <path d="M0 142 H18 V160" fill="none" stroke="#14213d" strokeWidth="3" />
+          <text x="-48" y="105" fill="#1d4ed8" fontSize="18" fontWeight="900">a²</text>
+          <text x="72" y="205" fill="#0f766e" fontSize="18" fontWeight="900">b²</text>
+          <text x="82" y="82" fill="#b45309" fontSize="18" fontWeight="900">c²</text>
+        </g>
+        <text x="316" y="164" fill="#14213d" fontSize="18" fontWeight="900">small square + small square</text>
+        <text x="344" y="194" fill="#14213d" fontSize="18" fontWeight="900">matches c²</text>
+      </svg>
+    </div>
+  );
+}
+
+function ProductGrid() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 320" role="img" aria-label="Product grid for two binomials" className="h-full min-h-80 w-full">
+        <rect width="520" height="320" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">(a+b)(c+d) is one rectangle split four ways.</text>
+        <g transform="translate(120 74)">
+          <rect width="120" height="90" fill="#dbeafe" stroke="#2563eb" strokeWidth="3" />
+          <rect x="120" width="82" height="90" fill="#fde68a" stroke="#d97706" strokeWidth="3" />
+          <rect y="90" width="120" height="70" fill="#ccfbf1" stroke="#0f766e" strokeWidth="3" />
+          <rect x="120" y="90" width="82" height="70" fill="#fbcfe8" stroke="#db2777" strokeWidth="3" />
+          <text x="46" y="52" fill="#1d4ed8" fontSize="20" fontWeight="900">ac</text>
+          <text x="148" y="52" fill="#b45309" fontSize="20" fontWeight="900">ad</text>
+          <text x="46" y="132" fill="#0f766e" fontSize="20" fontWeight="900">bc</text>
+          <text x="148" y="132" fill="#be185d" fontSize="20" fontWeight="900">bd</text>
+          <text x="64" y="-16" fill="#14213d" fontSize="15" fontWeight="900">a + b</text>
+          <text x="-54" y="84" fill="#14213d" fontSize="15" fontWeight="900">c + d</text>
+        </g>
+        <text x="156" y="286" fill="#14213d" fontSize="16" fontWeight="900">ac + ad + bc + bd</text>
+      </svg>
+    </div>
+  );
+}
+
+function FactorizationArea() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 320" role="img" aria-label="Factorization area model" className="h-full min-h-80 w-full">
+        <rect width="520" height="320" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Arrange tiles, then read the side lengths.</text>
+        <g transform="translate(128 76)">
+          <rect width="120" height="120" fill="#dbeafe" stroke="#2563eb" strokeWidth="3" />
+          <rect x="120" y="0" width="80" height="120" fill="#ccfbf1" stroke="#0f766e" strokeWidth="3" />
+          <rect x="0" y="120" width="120" height="60" fill="#fde68a" stroke="#d97706" strokeWidth="3" />
+          <rect x="120" y="120" width="80" height="60" fill="#fbcfe8" stroke="#db2777" strokeWidth="3" />
+          <text x="43" y="66" fill="#1d4ed8" fontSize="20" fontWeight="900">x²</text>
+          <text x="144" y="66" fill="#0f766e" fontSize="20" fontWeight="900">3x</text>
+          <text x="44" y="156" fill="#b45309" fontSize="20" fontWeight="900">2x</text>
+          <text x="148" y="156" fill="#be185d" fontSize="20" fontWeight="900">6</text>
+          <text x="58" y="-16" fill="#14213d" fontSize="15" fontWeight="900">x + 3</text>
+          <text x="-58" y="100" fill="#14213d" fontSize="15" fontWeight="900">x + 2</text>
+        </g>
+        <text x="137" y="290" fill="#14213d" fontSize="16" fontWeight="900">x² + 5x + 6 = (x + 2)(x + 3)</text>
+      </svg>
     </div>
   );
 }

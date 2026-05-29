@@ -26,16 +26,21 @@ Phase 1 is student-focused:
 ## Features Implemented
 
 - Student dashboard
+- Level-aware learning path for Beginner, Intermediate, and Advanced students
 - Geometry section
 - Algebra section
 - Practice section
 - Progress section
+- Mobile-first navigation and lesson layouts
+- Student name and level onboarding
 - Interactive circle radius demo
+- Interactive number line, angle, area, Pythagoras, and algebra area-model demos
 - Interactive circle area proof
 - Interactive `(a + b)²` area model
 - Color-coded formula explanations
-- Practice questions with feedback
-- Local progress tracking
+- Multiple choice, fill-in-the-blank, and step-based practice questions
+- Practice recap with mistake tracking
+- Local progress tracking with badges and weak concept review
 
 ## Getting Started
 
@@ -69,6 +74,12 @@ Start the production server:
 
 ```bash
 npm start
+```
+
+Run lint:
+
+```bash
+npm run lint
 ```
 
 ## Render Deployment
@@ -123,6 +134,7 @@ Notes for the free tier:
 app/                  Next.js app routes
 components/           Reusable UI and visual learning components
 lib/lessons.ts        Local lesson and practice data
+public/               Logo and favicon assets
 spec.md               Product specification
 plan.md               Implementation plan
 req.md                Original requirement document
@@ -132,10 +144,10 @@ req.md                Original requirement document
 
 Planned later additions:
 
-- More Geometry and Algebra lessons
-- More practice question types
 - Backend persistence
 - Optional authentication
 - Admin content management
 - Media upload support
 - Teacher or classroom mode
+- Printable worksheets
+- Cross-device progress sync

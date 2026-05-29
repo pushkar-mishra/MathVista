@@ -8,13 +8,13 @@ export function PracticeQuiz({ questions, lessonSlug }: { questions: PracticeQue
   const [submitted, setSubmitted] = useState(false);
   const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, string> | null>(null);
   const visibleAnswers = submittedAnswers ?? answers;
-  const score = questions.filter((question) => visibleAnswers[question.id] === question.correctAnswer).length;
-  const missedQuestions = questions.filter((question) => visibleAnswers[question.id] !== question.correctAnswer);
+  const score = questions.filter((question) => isAnswerCorrect(question, visibleAnswers[question.id])).length;
+  const missedQuestions = questions.filter((question) => !isAnswerCorrect(question, visibleAnswers[question.id]));
 
   function submit() {
     const finalAnswers = { ...answers };
-    const finalScore = questions.filter((question) => finalAnswers[question.id] === question.correctAnswer).length;
-    const finalMissedQuestions = questions.filter((question) => finalAnswers[question.id] !== question.correctAnswer);
+    const finalScore = questions.filter((question) => isAnswerCorrect(question, finalAnswers[question.id])).length;
+    const finalMissedQuestions = questions.filter((question) => !isAnswerCorrect(question, finalAnswers[question.id]));
     setSubmittedAnswers(finalAnswers);
     setSubmitted(true);
     const progress = JSON.parse(localStorage.getItem("mathvista-progress") ?? "{}");
@@ -69,30 +69,51 @@ export function PracticeQuiz({ questions, lessonSlug }: { questions: PracticeQue
       <div className="mt-5 grid gap-4">
         {questions.map((question, index) => {
           const selected = visibleAnswers[question.id];
-          const isCorrect = submitted && selected === question.correctAnswer;
-          const isWrong = submitted && selected && selected !== question.correctAnswer;
+          const isCorrect = submitted && isAnswerCorrect(question, selected);
+          const isWrong = submitted && !isAnswerCorrect(question, selected);
+          const questionType = question.type ?? "multiple-choice";
           return (
             <div key={question.id} className="rounded-lg border border-slate-200 bg-white p-4">
               <p className="font-bold text-slate-900">
                 {index + 1}. {question.prompt}
               </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                {question.options.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    disabled={submitted}
-                    onClick={() => setAnswers((current) => ({ ...current, [question.id]: option }))}
-                    className={`focus-ring min-h-11 rounded-md border px-3 py-3 text-left text-sm font-bold transition sm:py-2 ${
-                      selected === option
-                        ? "border-blue-500 bg-blue-50 text-blue-800"
-                        : "border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300 disabled:hover:border-slate-200"
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
+              {questionType === "fill-blank" ? (
+                <input
+                  value={answers[question.id] ?? ""}
+                  disabled={submitted}
+                  onChange={(event) => setAnswers((current) => ({ ...current, [question.id]: event.target.value }))}
+                  className="focus-ring mt-3 min-h-11 w-full rounded-md border border-slate-300 px-3 py-3 text-sm font-bold text-slate-900 disabled:bg-slate-50"
+                  placeholder="Type your answer"
+                />
+              ) : (
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  {(question.options ?? []).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      disabled={submitted}
+                      onClick={() => setAnswers((current) => ({ ...current, [question.id]: option }))}
+                      className={`focus-ring min-h-11 rounded-md border px-3 py-3 text-left text-sm font-bold transition sm:py-2 ${
+                        selected === option
+                          ? "border-blue-500 bg-blue-50 text-blue-800"
+                          : "border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300 disabled:hover:border-slate-200"
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {question.steps?.length ? (
+                <ol className="mt-3 grid gap-2 rounded-md border border-blue-100 bg-blue-50 p-3">
+                  {question.steps.map((step, stepIndex) => (
+                    <li key={step} className="grid grid-cols-[1.5rem_1fr] gap-2 text-sm font-semibold text-blue-950">
+                      <span>{stepIndex + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
               {submitted ? (
                 <div
                   className={`mt-3 rounded-md border px-3 py-2 text-sm ${
@@ -135,4 +156,14 @@ export function PracticeQuiz({ questions, lessonSlug }: { questions: PracticeQue
       </div>
     </section>
   );
+}
+
+function normalizeAnswer(answer = "") {
+  return answer.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function isAnswerCorrect(question: PracticeQuestion, answer?: string) {
+  const normalizedAnswer = normalizeAnswer(answer);
+  const accepted = [question.correctAnswer, ...(question.acceptedAnswers ?? [])].map(normalizeAnswer);
+  return accepted.includes(normalizedAnswer);
 }
