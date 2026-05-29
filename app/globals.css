@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #14213d;
+  --muted: #586174;
+  --paper: #fffdf7;
+  --line: #d9e2ec;
+  --blue: #2563eb;
+  --green: #14b8a6;
+  --amber: #f59e0b;
+  --rose: #e11d48;
+  --violet: #7c3aed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.16), transparent 34rem),
+    linear-gradient(180deg, #f8fbff 0%, var(--paper) 42%, #ffffff 100%);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a,
+input {
+  touch-action: manipulation;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input[type="range"] {
+  min-height: 2.75rem;
+}
+
+.focus-ring:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 3px;
+}
+
+.math-card {
+  border: 1px solid rgba(20, 33, 61, 0.1);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.08);
+}
+
+.formula {
+  font-family: "Courier New", Courier, monospace;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .math-card {
+    box-shadow: 0 8px 24px rgba(20, 33, 61, 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
