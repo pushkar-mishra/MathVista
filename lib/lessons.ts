@@ -2,8 +2,13 @@ export type Subject = "geometry" | "algebra";
 export type Level = 1 | 2 | 3;
 export type DemoId =
   | "geometry-basics"
+  | "shape-family"
+  | "triangle-types"
   | "angle-types"
   | "number-line"
+  | "place-value"
+  | "patterns"
+  | "fractions"
   | "perimeter-area"
   | "circle-explorer"
   | "rectangle-area"
@@ -92,6 +97,99 @@ export const lessons: Lesson[] = [
         options: ["A position", "A full area", "A formula"],
         correctAnswer: "A position",
         explanation: "A point marks an exact position."
+      }
+    ]
+  },
+  {
+    slug: "basic-shapes",
+    title: "Basic Shapes",
+    subject: "geometry",
+    level: 1,
+    accent: "green",
+    summary: "Recognize circles, triangles, squares, and rectangles.",
+    concept:
+      "Shapes are named by their sides, corners, and curves. Seeing those parts helps us classify them.",
+    formula: "Shape = sides + corners + curves",
+    symbols: [
+      "A circle has a curved boundary and no corners.",
+      "A triangle has 3 sides and 3 corners.",
+      "A square has 4 equal sides and 4 right angles.",
+      "A rectangle has 4 right angles and opposite sides equal."
+    ],
+    why: [
+      "Counting sides tells us whether a shape is a triangle or quadrilateral.",
+      "Checking equal sides helps separate squares from rectangles.",
+      "Curved boundaries help identify circles."
+    ],
+    demoId: "shape-family",
+    practice: [
+      {
+        id: "bs1",
+        prompt: "Which shape has no corners?",
+        options: ["Circle", "Triangle", "Square"],
+        correctAnswer: "Circle",
+        explanation: "A circle has one curved boundary and no corners."
+      },
+      {
+        id: "bs2",
+        type: "fill-blank",
+        prompt: "A triangle has ___ sides.",
+        correctAnswer: "3",
+        acceptedAnswers: ["3", "three"],
+        explanation: "A triangle always has three sides."
+      },
+      {
+        id: "bs3",
+        prompt: "A square is special because:",
+        options: ["All sides are equal", "It has no corners", "It has one side"],
+        correctAnswer: "All sides are equal",
+        explanation: "A square has four equal sides and four right angles."
+      }
+    ]
+  },
+  {
+    slug: "triangle-types",
+    title: "Triangle Types",
+    subject: "geometry",
+    level: 1,
+    accent: "amber",
+    summary: "Compare triangles by equal sides.",
+    concept:
+      "Triangles can be grouped by their side lengths: all equal, two equal, or none equal.",
+    formula: "Triangle = 3 sides",
+    symbols: [
+      "Equilateral triangles have 3 equal sides.",
+      "Isosceles triangles have 2 equal sides.",
+      "Scalene triangles have no equal sides."
+    ],
+    why: [
+      "Every triangle has three sides.",
+      "Side marks show which lengths match.",
+      "Grouping by side length helps us describe triangles quickly."
+    ],
+    demoId: "triangle-types",
+    practice: [
+      {
+        id: "tt1",
+        prompt: "A triangle with all sides equal is:",
+        options: ["Equilateral", "Scalene", "Rectangle"],
+        correctAnswer: "Equilateral",
+        explanation: "Equilateral means all three triangle sides are equal."
+      },
+      {
+        id: "tt2",
+        prompt: "A triangle with no equal sides is:",
+        options: ["Scalene", "Isosceles", "Circle"],
+        correctAnswer: "Scalene",
+        explanation: "Scalene triangles have no matching side lengths."
+      },
+      {
+        id: "tt3",
+        type: "fill-blank",
+        prompt: "An isosceles triangle has ___ equal sides.",
+        correctAnswer: "2",
+        acceptedAnswers: ["2", "two"],
+        explanation: "Isosceles triangles have exactly two equal sides."
       }
     ]
   },
@@ -188,6 +286,145 @@ export const lessons: Lesson[] = [
         options: ["Move 2 left", "Move 2 right", "Stay at 6"],
         correctAnswer: "Move 2 left",
         explanation: "Subtraction moves left on the number line."
+      }
+    ]
+  },
+  {
+    slug: "place-value-basics",
+    title: "Place Value",
+    subject: "algebra",
+    level: 1,
+    accent: "violet",
+    summary: "See how tens and ones build a number.",
+    concept:
+      "Place value tells how much a digit is worth based on where it sits in a number.",
+    formula: "47 = 4 tens + 7 ones",
+    symbols: [
+      "The ones place counts single units.",
+      "The tens place counts groups of ten.",
+      "A digit changes value when it moves places."
+    ],
+    why: [
+      "Numbers are built from groups.",
+      "Ten ones make one ten.",
+      "The place of a digit tells which group it counts."
+    ],
+    demoId: "place-value",
+    practice: [
+      {
+        id: "pv1",
+        prompt: "In 47, the 4 means:",
+        options: ["4 tens", "4 ones", "4 hundreds"],
+        correctAnswer: "4 tens",
+        explanation: "The 4 is in the tens place, so it means 40."
+      },
+      {
+        id: "pv2",
+        type: "fill-blank",
+        prompt: "6 tens and 2 ones make ___.",
+        correctAnswer: "62",
+        acceptedAnswers: ["62"],
+        explanation: "6 tens is 60, plus 2 ones makes 62."
+      },
+      {
+        id: "pv3",
+        prompt: "Ten ones make:",
+        options: ["1 ten", "1 hundred", "0"],
+        correctAnswer: "1 ten",
+        explanation: "A group of ten ones becomes one ten."
+      }
+    ]
+  },
+  {
+    slug: "visual-patterns",
+    title: "Visual Patterns",
+    subject: "algebra",
+    level: 1,
+    accent: "green",
+    summary: "Find the rule that makes a pattern grow.",
+    concept:
+      "A pattern follows a rule. Algebra helps describe that rule so we can predict what comes next.",
+    formula: "next = current + rule",
+    symbols: [
+      "A sequence is an ordered list.",
+      "A rule explains how the sequence changes.",
+      "A variable can stand for the step number."
+    ],
+    why: [
+      "Patterns make change visible.",
+      "Finding the repeated change gives the rule.",
+      "Once we know the rule, we can predict future steps."
+    ],
+    demoId: "patterns",
+    practice: [
+      {
+        id: "pt1",
+        prompt: "What is the next number: 2, 4, 6, 8, ___?",
+        options: ["10", "9", "12"],
+        correctAnswer: "10",
+        explanation: "The pattern adds 2 each time."
+      },
+      {
+        id: "pt2",
+        type: "fill-blank",
+        prompt: "The pattern 5, 10, 15 adds ___ each step.",
+        correctAnswer: "5",
+        acceptedAnswers: ["5", "five"],
+        explanation: "Each term increases by 5."
+      },
+      {
+        id: "pt3",
+        prompt: "A pattern rule helps us:",
+        options: ["Predict the next step", "Erase the sequence", "Ignore numbers"],
+        correctAnswer: "Predict the next step",
+        explanation: "The rule tells how the pattern continues."
+      }
+    ]
+  },
+  {
+    slug: "fractions-as-parts",
+    title: "Fractions as Equal Parts",
+    subject: "geometry",
+    level: 1,
+    accent: "rose",
+    summary: "See one whole split into equal parts.",
+    concept:
+      "A fraction shows how many equal parts of a whole we are using.",
+    formula: "1/4 = 1 part out of 4 equal parts",
+    symbols: [
+      "The bottom number tells total equal parts.",
+      "The top number tells selected parts.",
+      "Equal parts must be the same size."
+    ],
+    why: [
+      "Start with one whole shape.",
+      "Split it into equal parts.",
+      "Count how many parts are selected.",
+      "That count becomes the numerator."
+    ],
+    demoId: "fractions",
+    practice: [
+      {
+        id: "fr1",
+        prompt: "In 1/4, the 4 means:",
+        options: ["Total equal parts", "Selected parts", "No parts"],
+        correctAnswer: "Total equal parts",
+        explanation: "The denominator tells how many equal parts make the whole."
+      },
+      {
+        id: "fr2",
+        type: "fill-blank",
+        prompt: "Two selected parts out of four equal parts is ___/4.",
+        correctAnswer: "2",
+        acceptedAnswers: ["2", "2/4"],
+        explanation: "The numerator is 2 because two parts are selected."
+      },
+      {
+        id: "fr3",
+        prompt: "Fractions need parts to be:",
+        options: ["Equal", "Random sizes", "Invisible"],
+        correctAnswer: "Equal",
+        explanation: "Fractions compare equal parts of one whole."
       }
     ]
   },

@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PracticeQuiz } from "@/components/PracticeQuiz";
-import { getLesson } from "@/lib/lessons";
+import { getLesson, lessons } from "@/lib/lessons";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export function generateStaticParams() {
+  return lessons.map((lesson) => ({
+    slug: lesson.slug
+  }));
+}
 
 export default async function PracticeLessonPage({ params }: PageProps) {
   const { slug } = await params;

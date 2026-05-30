@@ -27,6 +27,7 @@ Phase 1 is student-focused:
 
 - Student dashboard
 - Level-aware learning path for Beginner, Intermediate, and Advanced students
+- Separate lesson completion and practice mastery
 - Geometry section
 - Algebra section
 - Practice section
@@ -39,8 +40,10 @@ Phase 1 is student-focused:
 - Interactive `(a + b)²` area model
 - Color-coded formula explanations
 - Multiple choice, fill-in-the-blank, and step-based practice questions
+- Practice filters by topic and level
 - Practice recap with mistake tracking
 - Local progress tracking with badges and weak concept review
+- First-time “How to use MathVista” intro
 
 ## Getting Started
 
@@ -84,49 +87,49 @@ npm run lint
 
 ## Render Deployment
 
-Deploy as a Render Web Service.
+This app is fully static in the current phase. Lessons are bundled at build time, and student profile/progress data is stored in browser `localStorage`.
+
+Use **Render Static Site** instead of **Render Web Service**. Static sites do not sleep on Render's free tier, while free web services can sleep after inactivity.
 
 Recommended settings:
 
 ```txt
-Environment: Node
+Type: Static Site
 Build Command: npm install && npm run build
-Start Command: npm start
+Publish Directory: out
 ```
 
-Render provides the `PORT` environment variable automatically. `next start` will use it.
+No start command is needed for a static site.
 
-## Deploy On Render Free Node
+## Deploy On Render Free Static Site
 
-This project can run on Render's free Node web service because Phase 1 is a single Next.js app with no backend database.
+This is the recommended deployment option for the current app.
 
 Steps:
 
 1. Push this repository to GitHub.
 2. Open Render and choose **New +**.
-3. Select **Web Service**.
+3. Select **Static Site**.
 4. Connect the GitHub repository.
 5. Use these settings:
 
 ```txt
 Name: mathvista
-Runtime: Node
-Instance Type: Free
 Build Command: npm install && npm run build
-Start Command: npm start
+Publish Directory: out
 ```
 
 6. Leave environment variables empty for now.
-7. Click **Create Web Service**.
+7. Click **Create Static Site**.
 
-Render will install dependencies, build the Next.js app, and run it with `npm start`.
+Render will install dependencies, build the static Next.js export, and serve the generated files from `out`.
 
 Notes for the free tier:
 
-- The first request after inactivity can be slow because free services may sleep.
+- Static sites do not sleep like free web services.
 - Student progress is stored in each browser's `localStorage`, so it does not sync across devices.
 - No database is needed for the current version.
-- If you later add login, admin, or cross-device progress, add a database or backend service.
+- If you later add login, admin, server APIs, or cross-device progress, switch back to a Web Service or add a backend service.
 
 ## Project Structure
 

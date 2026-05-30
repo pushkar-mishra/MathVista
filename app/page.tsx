@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HowToUseIntro } from "@/components/HowToUseIntro";
 import { PersonalizedLearning } from "@/components/PersonalizedLearning";
 import { ProgressSummary } from "@/components/ProgressSummary";
 
@@ -23,6 +24,10 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      <section className="mt-8">
+        <HowToUseIntro />
       </section>
 
       <section className="mt-8">

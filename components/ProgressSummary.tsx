@@ -5,26 +5,32 @@ import { useEffect, useState } from "react";
 import { lessons } from "@/lib/lessons";
 
 type StoredProgress = Record<string, { completed: boolean; score: number; total: number; mistakes?: string[]; updatedAt: string }>;
+type LessonCompletionMap = Record<string, { completed: boolean; updatedAt: string }>;
 
 export function ProgressSummary({ compact = false }: { compact?: boolean }) {
   const [progress, setProgress] = useState<StoredProgress>({});
+  const [lessonCompletions, setLessonCompletions] = useState<LessonCompletionMap>({});
 
   useEffect(() => {
     function refreshProgress() {
       setProgress(JSON.parse(localStorage.getItem("mathvista-progress") ?? "{}"));
+      setLessonCompletions(JSON.parse(localStorage.getItem("mathvista-lesson-completions") ?? "{}"));
     }
 
     refreshProgress();
     window.addEventListener("mathvista-progress-updated", refreshProgress);
+    window.addEventListener("mathvista-lessons-updated", refreshProgress);
 
     return () => {
       window.removeEventListener("mathvista-progress-updated", refreshProgress);
+      window.removeEventListener("mathvista-lessons-updated", refreshProgress);
     };
   }, []);
 
+  const learned = lessons.filter((lesson) => lessonCompletions[lesson.slug]?.completed).length;
   const completed = lessons.filter((lesson) => progress[lesson.slug]?.completed).length;
   const attempted = lessons.filter((lesson) => progress[lesson.slug]).length;
-  const percent = Math.round((completed / lessons.length) * 100);
+  const percent = Math.round((learned / lessons.length) * 100);
   const perfectScores = lessons.filter((lesson) => {
     const record = progress[lesson.slug];
     return Boolean(record) && record.total > 0 && record.score === record.total;
@@ -41,8 +47,11 @@ export function ProgressSummary({ compact = false }: { compact?: boolean }) {
 
   function resetProgress() {
     localStorage.removeItem("mathvista-progress");
+    localStorage.removeItem("mathvista-lesson-completions");
     setProgress({});
+    setLessonCompletions({});
     window.dispatchEvent(new Event("mathvista-progress-updated"));
+    window.dispatchEvent(new Event("mathvista-lessons-updated"));
   }
 
   return (
@@ -50,9 +59,9 @@ export function ProgressSummary({ compact = false }: { compact?: boolean }) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-sm font-bold uppercase text-blue-700">Local progress</p>
-          <h2 className="mt-1 text-2xl font-black text-slate-950">{percent}% complete</h2>
+          <h2 className="mt-1 text-2xl font-black text-slate-950">{percent}% learned</h2>
           <p className="mt-1 text-sm text-slate-600">
-            {completed} completed, {attempted} attempted, {lessons.length} available.
+            {learned} lessons learned, {completed} practices mastered, {attempted} attempted.
           </p>
         </div>
         <div className="h-3 w-full rounded-full bg-slate-100 sm:w-56">

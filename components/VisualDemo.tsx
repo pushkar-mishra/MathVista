@@ -5,8 +5,13 @@ import type { DemoId } from "@/lib/lessons";
 
 export function VisualDemo({ demoId }: { demoId: DemoId }) {
   if (demoId === "geometry-basics") return <GeometryBasics />;
+  if (demoId === "shape-family") return <ShapeFamily />;
+  if (demoId === "triangle-types") return <TriangleTypes />;
   if (demoId === "angle-types") return <AngleTypes />;
   if (demoId === "number-line") return <NumberLine />;
+  if (demoId === "place-value") return <PlaceValue />;
+  if (demoId === "patterns") return <Patterns />;
+  if (demoId === "fractions") return <Fractions />;
   if (demoId === "perimeter-area") return <PerimeterArea />;
   if (demoId === "circle-explorer") return <CircleExplorer />;
   if (demoId === "rectangle-area") return <RectangleArea />;
@@ -80,6 +85,151 @@ function PerimeterArea() {
           <text x="18" y="156" fill="#1d4ed8" fontSize="16" fontWeight="900">area = inside tiles</text>
         </g>
       </svg>
+    </div>
+  );
+}
+
+function ShapeFamily() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 300" role="img" aria-label="Basic shape family" className="h-full min-h-72 w-full">
+        <rect width="520" height="300" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Shapes are named by sides, corners, and curves.</text>
+        <circle cx="86" cy="135" r="42" fill="#dbeafe" stroke="#2563eb" strokeWidth="4" />
+        <text x="56" y="214" fill="#1d4ed8" fontSize="15" fontWeight="900">circle</text>
+        <polygon points="195,90 145,178 245,178" fill="#ccfbf1" stroke="#0f766e" strokeWidth="4" />
+        <text x="160" y="214" fill="#0f766e" fontSize="15" fontWeight="900">triangle</text>
+        <rect x="295" y="92" width="86" height="86" fill="#fde68a" stroke="#d97706" strokeWidth="4" />
+        <text x="316" y="214" fill="#b45309" fontSize="15" fontWeight="900">square</text>
+        <rect x="412" y="106" width="78" height="58" fill="#fbcfe8" stroke="#db2777" strokeWidth="4" />
+        <text x="416" y="214" fill="#be185d" fontSize="15" fontWeight="900">rectangle</text>
+      </svg>
+    </div>
+  );
+}
+
+function TriangleTypes() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <svg viewBox="0 0 520 300" role="img" aria-label="Triangle types by side length" className="h-full min-h-72 w-full">
+        <rect width="520" height="300" rx="16" fill="#f8fafc" />
+        <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Compare triangles by matching sides.</text>
+        <polygon points="90,82 40,178 140,178" fill="#dbeafe" stroke="#2563eb" strokeWidth="4" />
+        <text x="48" y="218" fill="#1d4ed8" fontSize="15" fontWeight="900">equilateral</text>
+        <text x="62" y="240" fill="#475569" fontSize="12" fontWeight="800">3 equal sides</text>
+        <polygon points="260,82 200,178 320,178" fill="#ccfbf1" stroke="#0f766e" strokeWidth="4" />
+        <text x="224" y="218" fill="#0f766e" fontSize="15" fontWeight="900">isosceles</text>
+        <text x="224" y="240" fill="#475569" fontSize="12" fontWeight="800">2 equal sides</text>
+        <polygon points="420,86 365,178 485,160" fill="#fde68a" stroke="#d97706" strokeWidth="4" />
+        <text x="390" y="218" fill="#b45309" fontSize="15" fontWeight="900">scalene</text>
+        <text x="380" y="240" fill="#475569" fontSize="12" fontWeight="800">no equal sides</text>
+      </svg>
+    </div>
+  );
+}
+
+function PlaceValue() {
+  const [tens, setTens] = useState(4);
+  const [ones, setOnes] = useState(7);
+  const value = tens * 10 + ones;
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[1fr_16rem]">
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Place value tens and ones" className="h-full min-h-72 w-full">
+          <rect width="520" height="300" rx="16" fill="#f8fafc" />
+          <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">Build a number from tens and ones.</text>
+          <g transform="translate(70 76)">
+            {Array.from({ length: tens }).map((_, index) => (
+              <rect key={index} x={index * 28} y="0" width="20" height="120" rx="4" fill="#dbeafe" stroke="#2563eb" strokeWidth="2" />
+            ))}
+            <text x="0" y="158" fill="#1d4ed8" fontSize="16" fontWeight="900">{tens} tens = {tens * 10}</text>
+          </g>
+          <g transform="translate(300 96)">
+            {Array.from({ length: ones }).map((_, index) => (
+              <circle key={index} cx={(index % 5) * 30} cy={Math.floor(index / 5) * 32} r="11" fill="#fde68a" stroke="#d97706" strokeWidth="2" />
+            ))}
+            <text x="0" y="138" fill="#b45309" fontSize="16" fontWeight="900">{ones} ones</text>
+          </g>
+          <text x="198" y="262" fill="#14213d" fontSize="22" fontWeight="900">{tens * 10} + {ones} = {value}</text>
+        </svg>
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <label className="block text-sm font-bold text-slate-700" htmlFor="tens">Tens = {tens}</label>
+        <input id="tens" className="mt-3 w-full accent-blue-600" type="range" min="1" max="8" value={tens} onChange={(event) => setTens(Number(event.target.value))} />
+        <label className="mt-5 block text-sm font-bold text-slate-700" htmlFor="ones">Ones = {ones}</label>
+        <input id="ones" className="mt-3 w-full accent-amber-600" type="range" min="0" max="9" value={ones} onChange={(event) => setOnes(Number(event.target.value))} />
+        <dl className="mt-5 grid gap-3 text-sm">
+          <Metric label="Number" value={value.toString()} color="text-violet-700" />
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+function Patterns() {
+  const [step, setStep] = useState(2);
+  const terms = Array.from({ length: 5 }, (_, index) => step * (index + 1));
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[1fr_16rem]">
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <svg viewBox="0 0 520 260" role="img" aria-label="Growing visual pattern" className="h-full min-h-64 w-full">
+          <rect width="520" height="260" rx="16" fill="#f8fafc" />
+          <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">A pattern grows by a rule.</text>
+          {terms.map((term, index) => (
+            <g key={term} transform={`translate(${52 + index * 92} 88)`}>
+              {Array.from({ length: Math.min(term, 10) }).map((_, dot) => (
+                <circle key={dot} cx={(dot % 5) * 14} cy={Math.floor(dot / 5) * 16} r="5" fill="#14b8a6" />
+              ))}
+              <text x="14" y="72" fill="#0f766e" fontSize="16" fontWeight="900">{term}</text>
+            </g>
+          ))}
+          <text x="180" y="222" fill="#14213d" fontSize="16" fontWeight="900">rule: add {step}</text>
+        </svg>
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <label className="block text-sm font-bold text-slate-700" htmlFor="pattern-step">Rule = add {step}</label>
+        <input id="pattern-step" className="mt-3 w-full accent-teal-600" type="range" min="1" max="5" value={step} onChange={(event) => setStep(Number(event.target.value))} />
+        <dl className="mt-5 grid gap-3 text-sm">
+          <Metric label="Terms" value={terms.join(", ")} color="text-teal-700" />
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+function Fractions() {
+  const [selected, setSelected] = useState(1);
+  const total = 4;
+
+  return (
+    <div className="grid gap-5 lg:grid-cols-[1fr_16rem]">
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <svg viewBox="0 0 430 280" role="img" aria-label="Fraction equal parts" className="h-full min-h-72 w-full">
+          <rect width="430" height="280" rx="16" fill="#f8fafc" />
+          <text x="24" y="32" fill="#14213d" fontSize="16" fontWeight="900">A fraction uses equal parts of one whole.</text>
+          <g transform="translate(85 78)">
+            {Array.from({ length: total }).map((_, index) => (
+              <path
+                key={index}
+                d={`M 100 80 L ${100 + 80 * Math.cos((index * Math.PI) / 2)} ${80 + 80 * Math.sin((index * Math.PI) / 2)} A 80 80 0 0 1 ${100 + 80 * Math.cos(((index + 1) * Math.PI) / 2)} ${80 + 80 * Math.sin(((index + 1) * Math.PI) / 2)} Z`}
+                fill={index < selected ? "#fbcfe8" : "#ffffff"}
+                stroke="#db2777"
+                strokeWidth="3"
+              />
+            ))}
+          </g>
+          <text x="172" y="238" fill="#be185d" fontSize="22" fontWeight="900">{selected}/{total}</text>
+        </svg>
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <label className="block text-sm font-bold text-slate-700" htmlFor="fraction-selected">Selected parts = {selected}</label>
+        <input id="fraction-selected" className="mt-3 w-full accent-rose-600" type="range" min="1" max="4" value={selected} onChange={(event) => setSelected(Number(event.target.value))} />
+        <dl className="mt-5 grid gap-3 text-sm">
+          <Metric label="Fraction" value={`${selected}/${total}`} color="text-rose-700" />
+        </dl>
+      </div>
     </div>
   );
 }

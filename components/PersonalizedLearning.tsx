@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { lessons } from "@/lib/lessons";
 
 type StoredProgress = Record<string, { completed: boolean; score: number; total: number; updatedAt: string }>;
+type LessonCompletionMap = Record<string, { completed: boolean; updatedAt: string }>;
 type StudentLevel = "beginner" | "intermediate" | "advanced";
 
 const levelLabels: Record<StudentLevel, string> = {
@@ -23,12 +24,14 @@ export function PersonalizedLearning() {
   const [name, setName] = useState("");
   const [studentLevel, setStudentLevel] = useState<StudentLevel>("beginner");
   const [progress, setProgress] = useState<StoredProgress>({});
+  const [lessonCompletions, setLessonCompletions] = useState<LessonCompletionMap>({});
 
   useEffect(() => {
     function refreshProfile() {
       setName(localStorage.getItem("mathvista-student-name") ?? "");
       setStudentLevel((localStorage.getItem("mathvista-student-level") as StudentLevel | null) ?? "beginner");
       setProgress(JSON.parse(localStorage.getItem("mathvista-progress") ?? "{}"));
+      setLessonCompletions(JSON.parse(localStorage.getItem("mathvista-lesson-completions") ?? "{}"));
     }
 
     refreshProfile();
@@ -44,12 +47,15 @@ export function PersonalizedLearning() {
   useEffect(() => {
     function refreshProgress() {
       setProgress(JSON.parse(localStorage.getItem("mathvista-progress") ?? "{}"));
+      setLessonCompletions(JSON.parse(localStorage.getItem("mathvista-lesson-completions") ?? "{}"));
     }
 
     window.addEventListener("mathvista-progress-updated", refreshProgress);
+    window.addEventListener("mathvista-lessons-updated", refreshProgress);
 
     return () => {
       window.removeEventListener("mathvista-progress-updated", refreshProgress);
+      window.removeEventListener("mathvista-lessons-updated", refreshProgress);
     };
   }, []);
 
@@ -73,11 +79,11 @@ export function PersonalizedLearning() {
   );
 
   const nextLesson = useMemo(
-    () => orderedLessons.find((lesson) => !progress[lesson.slug]?.completed),
-    [orderedLessons, progress]
+    () => orderedLessons.find((lesson) => !lessonCompletions[lesson.slug]?.completed),
+    [lessonCompletions, orderedLessons]
   );
 
-  const completedCount = lessons.filter((lesson) => progress[lesson.slug]?.completed).length;
+  const completedCount = lessons.filter((lesson) => lessonCompletions[lesson.slug]?.completed).length;
   const recommendation = reviewLesson ?? nextLesson ?? lessons[0];
   const isReview = Boolean(reviewLesson);
 

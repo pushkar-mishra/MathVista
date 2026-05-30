@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { LessonCompletion } from "@/components/LessonCompletion";
 import { VisualDemo } from "@/components/VisualDemo";
-import { getLesson, getNextLesson } from "@/lib/lessons";
+import { getLesson, getNextLesson, lessons } from "@/lib/lessons";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export function generateStaticParams() {
+  return lessons.map((lesson) => ({
+    slug: lesson.slug
+  }));
+}
 
 export default async function LessonPage({ params }: PageProps) {
   const { slug } = await params;
@@ -60,6 +67,10 @@ export default async function LessonPage({ params }: PageProps) {
             ))}
           </ol>
         </div>
+      </section>
+
+      <section className="mt-6">
+        <LessonCompletion lessonSlug={lesson.slug} />
       </section>
 
       <section className="mt-6 math-card rounded-lg p-4 sm:p-5">
