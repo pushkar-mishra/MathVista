@@ -133,7 +133,7 @@ export function StudentNameGate() {
               autoFocus
               maxLength={32}
               className="focus-ring mt-2 w-full rounded-md border border-slate-300 px-3 py-3 text-base font-bold text-slate-950"
-              placeholder="Example: Aarav"
+              placeholder="Example: Anika Kumari"
             />
 
             <fieldset className="mt-5">
